@@ -1,17 +1,21 @@
 package com.akka.stocks
 
-import com.akka.stocks.UserRegistry.ActionPerformed
-
-//#json-formats
-import spray.json.DefaultJsonProtocol
+import com.akka.stocks.models.{ClientRequest, Stock, Ticker, TickerData, TickerResults}
+import spray.json.DefaultJsonProtocol.jsonFormat3
+import spray.json.{DefaultJsonProtocol, RootJsonFormat}
 
 object JsonFormats  {
-  // import the default encoders for primitive types (Int, String, Lists etc)
   import DefaultJsonProtocol._
 
-  implicit val userJsonFormat = jsonFormat3(User)
-  implicit val usersJsonFormat = jsonFormat1(Users)
+  implicit val authenticatedRequestJsonFormat: RootJsonFormat[ClientRequest] = jsonFormat1(ClientRequest)
 
-  implicit val actionPerformedJsonFormat = jsonFormat1(ActionPerformed)
+  trait appJSONProtocol extends DefaultJsonProtocol {
+    implicit val stockJsonFormat: RootJsonFormat[Stock] = jsonFormat4(Stock)
+    implicit val stocksJsonFormat: RootJsonFormat[Stocks] = jsonFormat1(Stocks)
+
+    implicit val tickerDataJsonFormat: RootJsonFormat[TickerData] = jsonFormat3(TickerData)
+    implicit val tickerJsonFormat: RootJsonFormat[Ticker] = jsonFormat1(Ticker)
+    implicit val tickerResultsJsonFormat: RootJsonFormat[TickerResults] = jsonFormat1(TickerResults)
+
+  }
 }
-//#json-formats

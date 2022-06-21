@@ -26,8 +26,6 @@ class StocksRoutes(stocksActor: ActorRef[StocksActor.Command])(implicit val syst
     stocksActor.ask(GetTickerUpdates(clientRequest,ticker, _))
 
 
-
-
   val stocksRoutes: Route =
     pathPrefix("stocks") {
       concat(

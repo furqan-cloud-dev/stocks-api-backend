@@ -31,7 +31,8 @@ object StockAPIActor extends appJSONProtocol with SprayJsonSupport {
     Behaviors.receiveMessage {
       case GetAllTickers(request, replyTo) =>
         // Query all ticker symbols which are supported by Polygon.io. This API currently includes Stocks/Equities, Crypto, and Forex.
-        val getRequest = Get("https://api.polygon.io/v3/reference/tickers?active=true&sort=ticker&order=asc&limit=10&apiKey=vB1Owp_saOr5wHEJgwrNchzBeX3pmWNa")
+        val url = Constants.polygonBaseUrl + "v3/reference/tickers?active=true&sort=ticker&order=asc&limit=50&apiKey=" + Constants.apiKey
+        val getRequest = Get(url)
         val responseFuture = Http().singleRequest(getRequest)
         responseFuture
           .onComplete {
